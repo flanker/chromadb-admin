@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import {createJSONStorage, persist} from "zustand/middleware";
 
 export interface ApplicationState {
   connectionString: string;
@@ -6,8 +7,16 @@ export interface ApplicationState {
   updateConnectionString: (newConnectionString: string) => void
 }
 
-export const useApplicationStore = create<ApplicationState>()((set) => ({
-  connectionString: '',
-  currentCollectionName: '',
-  updateConnectionString: (newConnectionString) => set(() => ({connectionString: newConnectionString}))
-}))
+export const useApplicationStore = create<ApplicationState>()(
+  persist(
+    (set) => ({
+      connectionString: '',
+      currentCollectionName: '',
+      updateConnectionString: (newConnectionString) => set(() => ({connectionString: newConnectionString}))
+    }),
+    {
+      name: 'application-storage',
+      storage: createJSONStorage(() => localStorage)
+    }
+  )
+)
