@@ -1,6 +1,6 @@
-import {ChromaClient} from 'chromadb'
 import {useApplicationStore} from "@/lib/store";
 import {useEffect, useState} from "react";
+import {RecordGrid} from "@/app/componenets/record_grid";
 
 interface CollectionType {
   id: string
@@ -22,7 +22,7 @@ export function DatabasePanel() {
     if (connectionString) {
       fetchCollections()
     }
-  })
+  }, [])
 
   return (
     <div>
@@ -32,6 +32,9 @@ export function DatabasePanel() {
           <h3>{collection.name}</h3>
         </div>
       ))}
+      {collections.length !== 0 && (
+        <RecordGrid collectionName={collections[0].name}></RecordGrid>
+      )}
     </div>
   )
 }

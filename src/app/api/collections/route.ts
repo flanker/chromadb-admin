@@ -18,6 +18,7 @@ async function fetchCollections(connectionString: string) {
 }
 
 export async function GET(request: Request) {
+  console.log('----- collections')
   const connectionString = extractConnectionString(request);
   const data = await fetchCollections(connectionString);
 
