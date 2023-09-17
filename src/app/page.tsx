@@ -1,21 +1,20 @@
 'use client'
 
-import {useApplicationStore} from "@/lib/store";
-import {DatabasePanel} from "@/app/componenets/database_panel";
-import {ConnectionPanel} from "@/app/componenets/connection_panel";
-import {useStore} from "@/lib/use-store";
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
+import {useGetConfig} from "@/lib/client/query";
 
 export default function Home() {
+  const router = useRouter()
+  const {data} = useGetConfig()
 
-  const connection_string = useStore(useApplicationStore, (state) => state.connectionString);
+  useEffect(() => {
+    if (data === null) {
+      router.push('/setup')
+    } else {
+      router.push('/collections')
+    }
+  }, [data, router]);
 
-  return (
-    <div>
-      {connection_string ? (
-        <DatabasePanel></DatabasePanel>
-      ) : (
-        <ConnectionPanel></ConnectionPanel>
-      )}
-    </div>
-  )
+  return null
 }

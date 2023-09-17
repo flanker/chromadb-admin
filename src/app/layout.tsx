@@ -1,25 +1,23 @@
-import './globals.css'
-import type { Metadata } from 'next'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Vector UI',
-  description: 'A UI for vector database',
-}
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {MantineProvider, ColorSchemeScript} from '@mantine/core';
+import '@mantine/core/styles.css'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const queryClient = new QueryClient()
+
+export default function RootLayout({children}) {
   return (
     <html>
+    <head suppressHydrationWarning>
+      <ColorSchemeScript />
+    </head>
       <body>
-        <header>
-          <h1>Vector UI</h1>
-          <section>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider>
             {children}
-          </section>
-        </header>
+          </MantineProvider>
+        </QueryClientProvider>
       </body>
     </html>
   )
