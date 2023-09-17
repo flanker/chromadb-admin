@@ -1,7 +1,7 @@
 import { ChromaClient } from "chromadb";
 const chroma = new ChromaClient({ path: "http://localhost:8000" });
-const collection = await chroma.createCollection({ name: "test-from-js" });
-for (let i = 0; i < 20; i++) {
+const collection = await chroma.createCollection({ name: "collection-name" });
+for (let i = 0; i < 2000; i++) {
   await collection.add({
     ids: ["test-id-" + i.toString()],
     embeddings: [1, 2, 3, 4, 5],
@@ -14,4 +14,3 @@ const queryData = await collection.query({
 });
 
 console.log(queryData)
-
