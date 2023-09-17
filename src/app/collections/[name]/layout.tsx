@@ -1,8 +1,9 @@
 'use client'
 
-import {AppShell, AppShellMain, AppShellHeader, Group, Select} from "@mantine/core";
+import {AppShell, AppShellMain, AppShellHeader, Group, Select, Anchor, Text} from "@mantine/core";
 import {useGetCollections, useGetConfig} from "@/lib/client/query";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 export default function Layout({children, params}) {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function Layout({children, params}) {
       padding="md"
     >
       <AppShellHeader>
-        <Group h="100%" px="md" justify="space-between">
+        <Group h="100%" px="lg" justify="space-between">
           <Group>
             Vector UI
             {collections ? (
@@ -33,6 +34,14 @@ export default function Layout({children, params}) {
             ) : (
               <></>
             )}
+          </Group>
+          <Group>
+            <Text size="sm" c="dimmed">
+              {config?.connectionString}
+            </Text>
+            <Anchor component={Link} href="/setup">
+              Setup
+            </Anchor>
           </Group>
         </Group>
       </AppShellHeader>

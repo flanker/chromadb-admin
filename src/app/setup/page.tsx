@@ -29,12 +29,13 @@ export default function SetupPage() {
         Connect to Chroma
       </Title>
       <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
-        <TextInput label="Enter your Chroma connection string. e.g. http://localhost:8000"
+        <TextInput label="Enter your Chroma connection string:"
+                   description="For example, http://localhost:8000"
                    placeholder="http://localhost:8000"
                    value={connectionString}
-                    onChange={(e) => setConnectionString(e.currentTarget.value)}
-                   required />
-        <Group mt="lg">
+                   onChange={(e) => setConnectionString(e.currentTarget.value)}
+                   />
+        <Group mt="lg" justify="flex-end">
           <Button onClick={buttonClicked}>
             Connect
           </Button>
