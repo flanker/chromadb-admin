@@ -16,13 +16,15 @@ export async function fetchCollections(connectionString: string) {
   }))
 }
 
-export async function fetchRecords(connectionString: string, collectionName: string) {
+const PAGE_SIZE = 20
+
+export async function fetchRecords(connectionString: string, collectionName: string, page: number) {
   const client = new ChromaClient({ path: connectionString })
   const collection = await client.getCollection({ name: collectionName })
 
   const response = await collection.get({
-    limit: 10,
-    offset: 0,
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE,
     include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas],
   })
 
@@ -32,4 +34,11 @@ export async function fetchRecords(connectionString: string, collectionName: str
     metadata: response.metadatas[index],
     embedding: response.embeddings?.[index],
   }))
+}
+
+export async function countRecord(connectionString: string, collectionName: string) {
+  const client = new ChromaClient({ path: connectionString })
+  const collection = await client.getCollection({ name: collectionName })
+
+  return await collection.count()
 }

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getConfig } from '@/lib/client/localstorage'
 
-import type { AppConfig, Collection, Record } from '@/lib/types'
+import type { AppConfig, Collection, RecordsPage } from '@/lib/types'
 
 export function useGetConfig() {
   return useQuery({
@@ -23,12 +23,12 @@ export function useGetCollections(config?: AppConfig) {
   })
 }
 
-export function useGetCollectionRecords(config: AppConfig, collectionName: string) {
+export function useGetCollectionRecords(config?: AppConfig, collectionName?: string, page?: number) {
   return useQuery({
-    queryKey: ['collections', collectionName, 'records'],
-    queryFn: async (): Promise<Record[]> => {
+    queryKey: ['collections', collectionName, 'records', page],
+    queryFn: async (): Promise<RecordsPage> => {
       const response = await fetch(
-        `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}`
+        `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&page=${page}`
       )
       return response.json()
     },

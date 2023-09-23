@@ -14,3 +14,9 @@ export type Record = {
   metadata: { source: string }
   embedding: number[]
 }
+
+export type RecordsPage = {
+  total: number
+  page: number
+  records: Record[]
+}
