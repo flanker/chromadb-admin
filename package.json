@@ -9,14 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^7.0.0-beta.4",
-    "@mantine/hooks": "^7.0.0-beta.4",
+    "@mantine/core": "^7.0.0",
+    "@mantine/hooks": "^7.0.0",
     "@tanstack/react-query": "^4.35.3",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "chromadb": "^1.5.8",
+    "chromadb": "^1.5.11",
     "cohere-ai": "^6.2.2",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
