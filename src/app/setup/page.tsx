@@ -9,33 +9,44 @@ import { updateConnectionString } from '@/lib/client/localstorage'
 
 export default function SetupPage() {
   const router = useRouter()
-  const { data } = useGetConfig()
-  const [connectionString, setConnectionString] = useState(data?.connectionString || '')
+  const { data: appConfig } = useGetConfig()
+  const [connectionString, setConnectionString] = useState(appConfig?.connectionString || '')
 
   useEffect(() => {
-    if (data != null) {
-      setConnectionString(data.connectionString)
+    if (appConfig != null && appConfig.connectionString) {
+      setConnectionString(appConfig.connectionString)
     }
-  }, [data])
+  }, [appConfig])
 
-  const buttonClicked = () => {
+  const connectButtonClicked = () => {
     updateConnectionString(connectionString)
+    router.push('/collections')
+  }
+
+  const backButtonClicked = () => {
     router.push('/collections')
   }
 
   return (
     <Container size={460} my={30}>
-      <Title ta="center">Connect to Chroma</Title>
+      <Title order={1} ta="center">
+        ChromaAdmin
+      </Title>
       <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
         <TextInput
-          label="Enter your Chroma connection string:"
+          label="Chroma connection string"
           description="For example, http://localhost:8000"
           placeholder="http://localhost:8000"
           value={connectionString}
           onChange={e => setConnectionString(e.currentTarget.value)}
         />
         <Group mt="lg" justify="flex-end">
-          <Button onClick={buttonClicked}>Connect</Button>
+          {appConfig?.connectionString && (
+            <Button variant="default" onClick={backButtonClicked}>
+              Back
+            </Button>
+          )}
+          <Button onClick={connectButtonClicked}>Connect</Button>
         </Group>
       </Paper>
     </Container>

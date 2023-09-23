@@ -11,8 +11,6 @@ import type { ReactNode } from 'react'
 export default function Layout({ children, params }: { children: ReactNode; params: { name: string } }) {
   const router = useRouter()
   const { data: config } = useGetConfig()
-  console.log('---------- config')
-  console.log(config)
   const { name: currentCollectionName } = params
   const { data: collections } = useGetCollections(config)
 
@@ -25,7 +23,7 @@ export default function Layout({ children, params }: { children: ReactNode; para
       <AppShellHeader>
         <Group h="100%" px="lg" justify="space-between">
           <Group>
-            <Text fw={700}>Vector UI</Text>
+            <Text fw={700}>ChromaAdmin</Text>
             {collections ? (
               <Select
                 allowDeselect={false}

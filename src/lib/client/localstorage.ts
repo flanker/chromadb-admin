@@ -1,8 +1,12 @@
 import type { AppConfig } from '@/lib/types'
 
-export function getConfig() {
-  const config = window.localStorage.getItem('vector-ui-config') || '{}'
-  return JSON.parse(config)
+export function getConfig(): AppConfig {
+  const config = window.localStorage.getItem('vector-ui-config')
+  if (config) {
+    return JSON.parse(config)
+  } else {
+    return { connectionString: '', currentCollection: '' }
+  }
 }
 
 export function updateConfig(config: AppConfig) {

@@ -12,7 +12,7 @@ export function useGetConfig() {
   })
 }
 
-export function useGetCollections(config: AppConfig) {
+export function useGetCollections(config?: AppConfig) {
   return useQuery({
     queryKey: ['config', config?.connectionString, 'collections'],
     queryFn: async (): Promise<Collection[]> => {
