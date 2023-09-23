@@ -1,4 +1,4 @@
-import {AppConfig} from "@/lib/types";
+import type { AppConfig } from '@/lib/types'
 
 export function getConfig() {
   const config = window.localStorage.getItem('vector-ui-config') || '{}'
@@ -11,10 +11,10 @@ export function updateConfig(config: AppConfig) {
 }
 
 export function updateConnectionString(connectionString: string) {
-  const config = getConfig() || {connectionString: '', currentCollection: ''}
+  const config = getConfig() || { connectionString: '', currentCollection: '' }
   const newConfig = {
     ...config,
-    connectionString
+    connectionString,
   }
   return updateConfig(newConfig)
 }

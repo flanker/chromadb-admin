@@ -11,6 +11,6 @@ export type Collection = {
 export type Record = {
   id: string
   document: string
-  metadata: {source: string}
+  metadata: { source: string }
   embedding: number[]
 }

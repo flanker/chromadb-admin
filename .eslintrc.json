@@ -1,3 +1,82 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "rules": {
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "import",
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": "import",
+        "next": "import"
+      }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "name": "lodash",
+        "message": "Please use lodash-es instead."
+      },
+      {
+        "name": "antd",
+        "message": "Please use antd/es/* instead."
+      }
+    ],
+    "import/no-unresolved": "error",
+    "import/first": "error",
+    "import/no-amd": "error",
+    "import/no-webpack-loader-syntax": "error",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "desc", "caseInsensitive": true },
+        "groups": [[
+          "builtin", "external"
+        ], [
+          "internal", "parent", "sibling", "index", "object"
+        ], [
+          "type"
+        ]],
+        "pathGroups": [
+          {
+            "pattern": "./**/*.module.scss",
+            "group": "sibling",
+            "position": "after"
+          },
+          {
+            "pattern": "./**/*.module.css",
+            "group": "sibling",
+            "position": "after"
+          }
+        ],
+        "newlines-between": "always",
+        "warnOnUnassignedImports": true
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": "error"
+  },
+  "overrides": [{
+    "files": [
+      "**/*.ts", "**/*.tsx"
+    ],
+    "plugins": ["import", "@typescript-eslint"],
+    "settings": {
+      "react": {
+        "version": "detect"
+      },
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts", ".tsx"]
+      },
+      "import/resolver": {
+        "typescript": {
+          "alwaysTryTypes": true,
+          "project": "apps/*/tsconfig.json"
+        }
+      }
+    }
+  }]
 }

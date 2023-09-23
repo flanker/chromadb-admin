@@ -1,12 +1,13 @@
 'use client'
 
-import {useEffect} from "react";
-import {useRouter} from "next/navigation";
-import {useGetConfig} from "@/lib/client/query";
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
+import { useGetConfig } from '@/lib/client/query'
 
 export default function Home() {
   const router = useRouter()
-  const {data} = useGetConfig()
+  const { data } = useGetConfig()
 
   useEffect(() => {
     if (data === null) {
@@ -14,7 +15,7 @@ export default function Home() {
     } else {
       router.push('/collections')
     }
-  }, [data, router]);
+  }, [data, router])
 
   return null
 }
