@@ -3,7 +3,7 @@
 import {Text, Group, Paper, Table} from "@mantine/core";
 import {useGetCollectionRecords, useGetConfig} from "@/lib/client/query";
 
-export default function CollectionPage({params}) {
+export default function CollectionPage({params}: {params: {name: string}}) {
 
   const {data: config} = useGetConfig()
   const {name} = params
@@ -32,7 +32,7 @@ export default function CollectionPage({params}) {
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {data.data.map((record) => (
+          {data?.map((record) => (
             <Table.Tr key={record.id}>
               <Table.Td>{record.id}</Table.Td>
               <Table.Td>{record.document}</Table.Td>

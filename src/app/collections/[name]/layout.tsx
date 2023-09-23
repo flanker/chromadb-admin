@@ -4,14 +4,15 @@ import {AppShell, AppShellMain, AppShellHeader, Group, Select, Anchor, Text} fro
 import {useGetCollections, useGetConfig} from "@/lib/client/query";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
+import {ReactNode} from "react";
 
-export default function Layout({children, params}) {
+export default function Layout({children, params}: {children: ReactNode, params: {name: string}}) {
   const router = useRouter()
   const {data: config} = useGetConfig()
   const {name: currentCollectionName} = params
   const {data: collections} = useGetCollections(config)
 
-  const collectionChanged = (name) => {
+  const collectionChanged = (name: string) => {
     router.push(`/collections/${name}`)
   }
 
@@ -28,7 +29,7 @@ export default function Layout({children, params}) {
               <Select
                 allowDeselect={false}
                 value={currentCollectionName}
-                data={collections?.data.map((c) => c.name)}
+                data={collections?.map((c) => c.name)}
                 onChange={collectionChanged}
               />
             ) : (

@@ -1,5 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {getConfig} from "@/lib/client/localstorage";
+import {AppConfig, Collection, Record} from "@/lib/types";
 
 export function useGetConfig() {
   return useQuery({
@@ -9,10 +10,10 @@ export function useGetConfig() {
   })
 }
 
-export function useGetCollections(config) {
+export function useGetCollections(config: AppConfig) {
   return useQuery({
     queryKey: ['collections', config?.connectionString],
-    queryFn: async () => {
+    queryFn: async () : Promise<Collection[]> => {
       const response = await fetch(`/api/collections?connectionString=${config?.connectionString}`)
       return response.json()
     },
@@ -20,10 +21,10 @@ export function useGetCollections(config) {
   })
 }
 
-export function useGetCollectionRecords(config, collectionName) {
+export function useGetCollectionRecords(config: AppConfig, collectionName: string) {
   return useQuery({
     queryKey: ['collections', collectionName],
-    queryFn: async () => {
+    queryFn: async () : Promise<Record[]> => {
       const response = await fetch(`/api/collections/${collectionName}/records?connectionString=${config?.connectionString}`)
       return response.json()
     },

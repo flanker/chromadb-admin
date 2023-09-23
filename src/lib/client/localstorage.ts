@@ -1,13 +1,16 @@
+import {AppConfig} from "@/lib/types";
+
 export function getConfig() {
-  return JSON.parse(window.localStorage.getItem('vector-ui-config'))
+  const config = window.localStorage.getItem('vector-ui-config') || '{}'
+  return JSON.parse(config)
 }
 
-export function updateConfig(config) {
+export function updateConfig(config: AppConfig) {
   const stringValue = JSON.stringify(config)
   return window.localStorage.setItem('vector-ui-config', stringValue)
 }
 
-export function updateConnectionString(connectionString) {
+export function updateConnectionString(connectionString: string) {
   const config = getConfig() || {connectionString: '', currentCollection: ''}
   const newConfig = {
     ...config,

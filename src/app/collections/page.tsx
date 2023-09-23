@@ -12,7 +12,7 @@ export default function CollectionsPage() {
   useEffect(() => {
     console.log(collections)
     if (collections != null) {
-      router.push(`/collections/${collections.data[0].name}`)
+      router.push(`/collections/${collections[0].name}`)
     }
   }, [collections, router]);
 

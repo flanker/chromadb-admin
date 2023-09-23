@@ -4,7 +4,7 @@ import {fetchCollections} from "@/lib/server/db";
 export async function GET(request: Request) {
   const connectionString = extractConnectionString(request);
   const data = await fetchCollections(connectionString);
-  return NextResponse.json({data})
+  return NextResponse.json(data)
 }
 
 function extractConnectionString(request: Request) {

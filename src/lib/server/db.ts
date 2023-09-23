@@ -1,5 +1,11 @@
 import {ChromaClient} from "chromadb";
 
+enum IncludeEnum {
+  Documents = 'documents',
+  Embeddings = 'embeddings',
+  Metadatas = 'metadatas',
+}
+
 export async function fetchCollections(connectionString: string) {
   const client = new ChromaClient({path: connectionString});
   const collections = await client.listCollections();
@@ -17,13 +23,13 @@ export async function fetchRecords(connectionString: string, collectionName: str
   const response = await collection.get({
     limit: 10,
     offset: 0,
-    include: ["embeddings", "metadatas", "documents"],
+    include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas],
   });
 
   return response.ids.map((id, index) => ({
     id,
     document: response.documents[index],
     metadata: response.metadatas[index],
-    embedding: response.embeddings[index]
+    embedding: response.embeddings?.[index]
   }))
 }
