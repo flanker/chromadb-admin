@@ -1,9 +1,10 @@
 'use client'
 
-import { Text, Group, Paper } from '@mantine/core'
+import { Paper } from '@mantine/core'
 
 import { useGetCollectionRecords, useGetConfig } from '@/lib/client/query'
-import Records from '@/app/collections/[name]/componenets/Records'
+import RecordTable from '@/components/RecordTable'
+import LoadingRecordTable from '@/components/LoadingRecordTable'
 
 export default function CollectionPage({ params }: { params: { name: string } }) {
   const { data: config } = useGetConfig()
@@ -11,13 +12,17 @@ export default function CollectionPage({ params }: { params: { name: string } })
   const { data, isLoading } = useGetCollectionRecords(config, name)
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <Paper shadow="xs" p="lg" h={'50vh'} withBorder pos="relative">
+        <LoadingRecordTable />
+      </Paper>
+    )
   }
 
   if (data) {
     return (
       <Paper shadow="xs" p="lg" withBorder>
-        <Records data={data}></Records>
+        <RecordTable data={data}></RecordTable>
       </Paper>
     )
   }

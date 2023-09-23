@@ -14,7 +14,7 @@ export function useGetConfig() {
 
 export function useGetCollections(config: AppConfig) {
   return useQuery({
-    queryKey: ['collections', config?.connectionString],
+    queryKey: ['config', config?.connectionString, 'collections'],
     queryFn: async (): Promise<Collection[]> => {
       const response = await fetch(`/api/collections?connectionString=${config?.connectionString}`)
       return response.json()
@@ -25,7 +25,7 @@ export function useGetCollections(config: AppConfig) {
 
 export function useGetCollectionRecords(config: AppConfig, collectionName: string) {
   return useQuery({
-    queryKey: ['collections', collectionName],
+    queryKey: ['collections', collectionName, 'records'],
     queryFn: async (): Promise<Record[]> => {
       const response = await fetch(
         `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}`

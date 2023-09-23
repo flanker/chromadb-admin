@@ -11,7 +11,7 @@
   "dependencies": {
     "@mantine/core": "^7.0.0",
     "@mantine/hooks": "^7.0.0",
-    "@tanstack/react-query": "^4.35.3",
+    "@tanstack/react-query": "^5.0.0-beta.35",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -28,6 +28,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "5.0.0-beta.35",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.38.0",

@@ -11,6 +11,8 @@ import type { ReactNode } from 'react'
 export default function Layout({ children, params }: { children: ReactNode; params: { name: string } }) {
   const router = useRouter()
   const { data: config } = useGetConfig()
+  console.log('---------- config')
+  console.log(config)
   const { name: currentCollectionName } = params
   const { data: collections } = useGetCollections(config)
 

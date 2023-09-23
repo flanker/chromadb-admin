@@ -4,7 +4,7 @@ import styles from './index.module.scss'
 
 import type { Record } from '@/lib/types'
 
-const Records = ({ data }: { data: Record[] }) => {
+const RecordTable = ({ data }: { data: Record[] }) => {
   return (
     <Table highlightOnHover>
       <Table.Thead>
@@ -33,4 +33,4 @@ const Records = ({ data }: { data: Record[] }) => {
   )
 }
 
-export default Records
+export default RecordTable
