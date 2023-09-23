@@ -23,7 +23,7 @@ export default function Layout({ children, params }: { children: ReactNode; para
       <AppShellHeader>
         <Group h="100%" px="lg" justify="space-between">
           <Group>
-            Vector UI
+            <Text fw={700}>Vector UI</Text>
             {collections ? (
               <Select
                 allowDeselect={false}
