@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 import { Container, Title, Paper, TextInput, Group, Button } from '@mantine/core'
 
 import { useGetConfig } from '@/lib/client/query'
@@ -18,8 +19,10 @@ export default function SetupPage() {
     }
   }, [appConfig])
 
+  const queryClient = useQueryClient()
   const connectButtonClicked = () => {
     updateConnectionString(connectionString)
+    queryClient.setQueryData(['config'], { connectionString })
     router.push('/collections')
   }
 

@@ -7,15 +7,15 @@ import { useGetConfig } from '@/lib/client/query'
 
 export default function Home() {
   const router = useRouter()
-  const { data } = useGetConfig()
+  const { data: appConfig } = useGetConfig()
 
   useEffect(() => {
-    if (data === null) {
-      router.push('/setup')
-    } else {
+    if (appConfig?.connectionString) {
       router.push('/collections')
+    } else {
+      router.push('/setup')
     }
-  }, [data, router])
+  }, [appConfig, router])
 
   return null
 }

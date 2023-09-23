@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useGetConfig } from '@/lib/client/query'
@@ -10,9 +11,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   const router = useRouter()
   const { data: config } = useGetConfig()
 
-  if (config && !config.connectionString) {
-    router.push(`/setup`)
-  }
+  useEffect(() => {
+    if (config && !config.connectionString) {
+      router.push(`/setup`)
+    }
+  }, [config, router])
 
   return <>{children}</>
 }
