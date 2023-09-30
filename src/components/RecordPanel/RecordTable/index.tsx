@@ -1,10 +1,23 @@
+import { modals } from '@mantine/modals'
 import { Table } from '@mantine/core'
 
 import styles from './index.module.scss'
 
+import type { Record } from '@/lib/types'
 import type { RecordsPage } from '@/lib/types'
 
 const RecordTable = ({ recordsPage }: { recordsPage: RecordsPage }) => {
+  const openDetailModal = (record: Record) => {
+    modals.openContextModal({
+      modalId: 'recordDetailModal',
+      modal: 'recordDetailModal',
+      size: 'xl',
+      title: `ID: ${record.id}`,
+      innerProps: { record },
+      centered: true,
+    })
+  }
+
   return (
     <Table highlightOnHover layout={'fixed'}>
       <Table.Thead>
@@ -17,7 +30,7 @@ const RecordTable = ({ recordsPage }: { recordsPage: RecordsPage }) => {
       </Table.Thead>
       <Table.Tbody>
         {recordsPage?.records.map(record => (
-          <Table.Tr key={record.id}>
+          <Table.Tr key={record.id} onClick={() => openDetailModal(record)}>
             <Table.Td className={styles.td}>{record.id}</Table.Td>
             <Table.Td className={styles.td}>{record.document}</Table.Td>
             <Table.Td className={styles.td}>{record.metadata ? JSON.stringify(record.metadata) : ''}</Table.Td>

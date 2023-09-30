@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { ModalsProvider } from '@mantine/modals'
 import { Group, Paper } from '@mantine/core'
 
 import { useGetCollectionRecords, useGetConfig } from '@/lib/client/query'
 import RecordTable from '@/components/RecordPanel/RecordTable'
 import RecordPagination from '@/components/RecordPanel/RecordPagination'
+import RecordDetailModal from '@/components/RecordPanel/RecordDetailModal'
 import LoadingRecordTable from '@/components/LoadingRecordTable'
 
 const RecordPanel = ({ collectionName }: { collectionName: string }) => {
@@ -22,10 +24,12 @@ const RecordPanel = ({ collectionName }: { collectionName: string }) => {
   if (recordsPage) {
     return (
       <Paper shadow="xs" p="lg" withBorder>
-        <RecordTable recordsPage={recordsPage}></RecordTable>
-        <Group pt="md" justify="flex-end">
-          <RecordPagination recordsPage={recordsPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        </Group>
+        <ModalsProvider modals={{ recordDetailModal: RecordDetailModal }}>
+          <RecordTable recordsPage={recordsPage}></RecordTable>
+          <Group pt="md" justify="flex-end">
+            <RecordPagination recordsPage={recordsPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </Group>
+        </ModalsProvider>
       </Paper>
     )
   }
