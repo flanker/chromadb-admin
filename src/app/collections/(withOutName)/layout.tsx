@@ -3,7 +3,8 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Anchor, AppShell, AppShellHeader, AppShellMain, Group, Text } from '@mantine/core'
+import { IconSettings } from '@tabler/icons-react'
+import { ActionIcon, Anchor, AppShell, AppShellHeader, AppShellMain, Group, Text } from '@mantine/core'
 
 import { useGetConfig } from '@/lib/client/query'
 
@@ -30,8 +31,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <Text size="sm" c="dimmed">
               {config?.connectionString}
             </Text>
-            <Anchor component={Link} href="/setup">
-              Setup
+            <Anchor component={Link} href="/setup" title={'Setup'}>
+              <ActionIcon variant="default" aria-label="Settings" size={'lg'}>
+                <IconSettings stroke={1.5} />
+              </ActionIcon>
             </Anchor>
           </Group>
         </Group>

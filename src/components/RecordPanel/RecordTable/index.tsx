@@ -14,7 +14,6 @@ const RecordTable = ({ recordsPage }: { recordsPage: RecordsPage }) => {
       size: 'xl',
       title: `ID: ${record.id}`,
       innerProps: { record },
-      centered: true,
     })
   }
 
