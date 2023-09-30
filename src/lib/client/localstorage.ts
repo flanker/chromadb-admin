@@ -1,7 +1,9 @@
 import type { AppConfig } from '@/lib/types'
 
+const localStorageItemKey = 'chroma-admin-config'
+
 export function getConfig(): AppConfig {
-  const config = window.localStorage.getItem('vector-ui-config')
+  const config = window.localStorage.getItem(localStorageItemKey)
   if (config) {
     return JSON.parse(config)
   } else {
@@ -11,7 +13,7 @@ export function getConfig(): AppConfig {
 
 export function updateConfig(config: AppConfig) {
   const stringValue = JSON.stringify(config)
-  return window.localStorage.setItem('vector-ui-config', stringValue)
+  return window.localStorage.setItem(localStorageItemKey, stringValue)
 }
 
 export function updateConnectionString(connectionString: string) {
