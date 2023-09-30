@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  chroma8000:
+    image: ghcr.io/chroma-core/chroma:latest
+    volumes:
+      - chroma8000_index_data:/index_data
+    ports:
+      - 8000:8000
+
+  chroma8001:
+    image: ghcr.io/chroma-core/chroma:latest
+    volumes:
+      - chroma8001_index_data:/index_data
+    ports:
+      - 8001:8000
+
+  chroma8002:
+    image: ghcr.io/chroma-core/chroma:latest
+    volumes:
+      - chroma8002_index_data:/index_data
+    ports:
+      - 8002:8000
+  
+
+volumes:
+  chroma8000_index_data:
+  chroma8001_index_data:
+  chroma8002_index_data:
