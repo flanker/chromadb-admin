@@ -24,7 +24,7 @@ export default function Layout({ children, params }: { children: ReactNode; para
       <AppShellHeader>
         <Group h="100%" px="lg" justify="space-between">
           <Group>
-            <Text fw={700}>ChromaAdmin</Text>
+            <Text fw={700}>Chromadb Admin</Text>
             {collections ? (
               <Select
                 allowDeselect={false}

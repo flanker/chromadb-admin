@@ -1,6 +1,6 @@
 import type { AppConfig } from '@/lib/types'
 
-const localStorageItemKey = 'chroma-admin-config'
+const localStorageItemKey = 'chromadb-admin-config'
 
 export function getConfig(): AppConfig {
   const config = window.localStorage.getItem(localStorageItemKey)

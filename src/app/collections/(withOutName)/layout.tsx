@@ -25,7 +25,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <AppShellHeader>
         <Group h="100%" px="lg" justify="space-between">
           <Group>
-            <Text fw={700}>ChromaAdmin</Text>
+            <Text fw={700}>Chromadb Admin</Text>
           </Group>
           <Group>
             <Text size="sm" c="dimmed">

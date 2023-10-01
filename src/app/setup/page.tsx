@@ -33,7 +33,7 @@ export default function SetupPage() {
   return (
     <Container size={460} my={30}>
       <Title order={1} ta="center">
-        ChromaAdmin
+        Chromadb Admin
       </Title>
       <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
         <TextInput

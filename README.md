@@ -1,4 +1,4 @@
-# ChromaAdmin
+# Chromadb Admin
 
 Admin UI for Chroma embedding database. Built with Next.js
 
