@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getConfig } from '@/lib/client/localstorage'
 
-import type { AppConfig, Collection, RecordsPage } from '@/lib/types'
+import type { AppConfig, Collection, QueryResult } from '@/lib/types'
 
 export function useGetConfig() {
   return useQuery({
@@ -23,14 +23,25 @@ export function useGetCollections(config?: AppConfig) {
   })
 }
 
-export function useGetCollectionRecords(config?: AppConfig, collectionName?: string, page?: number) {
+export function useGetCollectionRecords(config?: AppConfig, collectionName?: string, page?: number, query?: string) {
   return useQuery({
-    queryKey: ['collections', collectionName, 'records', page],
-    queryFn: async (): Promise<RecordsPage> => {
-      const response = await fetch(
-        `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&page=${page}`
-      )
-      return response.json()
+    queryKey: ['collections', collectionName, 'records', query, page],
+    queryFn: async (): Promise<QueryResult> => {
+      if (query === undefined || query === '') {
+        const response = await fetch(
+          `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&page=${page}&query=${query}`
+        )
+        return response.json()
+      } else {
+        const response = await fetch(
+          `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ query: query }),
+          }
+        )
+        return response.json()
+      }
     },
     enabled: !!config?.connectionString,
   })

@@ -20,3 +20,9 @@ export type RecordsPage = {
   page: number
   records: Record[]
 }
+
+export type ErrorResponse = {
+  error: string
+}
+
+export type QueryResult = RecordsPage | ErrorResponse

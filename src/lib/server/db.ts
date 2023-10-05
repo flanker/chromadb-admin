@@ -36,6 +36,34 @@ export async function fetchRecords(connectionString: string, collectionName: str
   }))
 }
 
+const QUERY_K = 10
+
+type queryErrorResponse = {
+  error: string
+}
+
+export async function queryRecords(connectionString: string, collectionName: string, queryEmbeddings: number[]) {
+  const client = new ChromaClient({ path: connectionString })
+  const collection = await client.getCollection({ name: collectionName })
+
+  const response = await collection.query({
+    queryEmbeddings: queryEmbeddings,
+    nResults: QUERY_K,
+    include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas],
+  })
+
+  if ((response as unknown as queryErrorResponse)['error'] != null) {
+    throw new Error((response as unknown as queryErrorResponse)['error'])
+  }
+
+  return response.ids[0].map((id, index) => ({
+    id,
+    document: response.documents[0][index],
+    metadata: response.metadatas[0][index],
+    embedding: response.embeddings?.[0][index],
+  }))
+}
+
 export async function countRecord(connectionString: string, collectionName: string) {
   const client = new ChromaClient({ path: connectionString })
   const collection = await client.getCollection({ name: collectionName })
