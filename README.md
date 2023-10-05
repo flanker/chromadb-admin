@@ -2,7 +2,7 @@
 
 Admin UI for Chroma embedding database. Built with Next.js
 
-![screely-1695463179137](https://github.com/flanker/chromaadmin/assets/109811/e84daf87-2e55-4f76-8a41-9691fe4c097b)
+![screely-1696533854233](https://github.com/flanker/chromadb-admin/assets/109811/08bffbbb-bba2-4095-b028-7b14deda00ec)
 
 ## Getting Started
 
