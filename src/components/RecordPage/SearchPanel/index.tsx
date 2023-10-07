@@ -1,16 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAtom, useSetAtom } from 'jotai'
 import { Button, Grid, Text, Input, Paper } from '@mantine/core'
 
-import type { SetStateAction, Dispatch } from 'react'
+import { currentPageAtom, queryAtom } from '@/components/RecordPage/atom'
 
-const SearchPanel = ({
-  setQuery,
-  setCurrentPage,
-}: {
-  setQuery: Dispatch<SetStateAction<string>>
-  setCurrentPage: Dispatch<SetStateAction<number>>
-}) => {
-  const [queryValue, setQueryValue] = useState('')
+const SearchPanel = () => {
+  const [query, setQuery] = useAtom(queryAtom)
+  const setCurrentPage = useSetAtom(currentPageAtom)
+
+  const [queryValue, setQueryValue] = useState(query)
+
+  useEffect(() => {
+    setQueryValue(query)
+  }, [query])
 
   const queryButtonClicked = () => {
     setQuery(queryValue)
