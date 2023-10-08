@@ -4,6 +4,7 @@ enum IncludeEnum {
   Documents = 'documents',
   Embeddings = 'embeddings',
   Metadatas = 'metadatas',
+  Distances = 'distances',
 }
 
 export async function fetchCollections(connectionString: string) {
@@ -49,7 +50,7 @@ export async function queryRecords(connectionString: string, collectionName: str
   const response = await collection.query({
     queryEmbeddings: queryEmbeddings,
     nResults: QUERY_K,
-    include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas],
+    include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas, IncludeEnum.Distances],
   })
 
   if ((response as unknown as queryErrorResponse)['error'] != null) {
@@ -61,6 +62,7 @@ export async function queryRecords(connectionString: string, collectionName: str
     document: response.documents[0][index],
     metadata: response.metadatas[0][index],
     embedding: response.embeddings?.[0][index],
+    distance: response.distances?.[0][index],
   }))
 }
 

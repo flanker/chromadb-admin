@@ -13,6 +13,7 @@ export type Record = {
   document: string
   metadata: { source: string }
   embedding: number[]
+  distance: number
 }
 
 export type RecordsPage = {

@@ -8,7 +8,7 @@ import styles from './index.module.scss'
 import type { Record } from '@/lib/types'
 import type { RecordsPage } from '@/lib/types'
 
-const RecordTable = ({ recordsPage }: { recordsPage: RecordsPage }) => {
+const RecordTable = ({ withQuery, recordsPage }: { withQuery: boolean; recordsPage: RecordsPage }) => {
   const openDetailModal = (record: Record) => {
     modals.openContextModal({
       modalId: 'recordDetailModal',
@@ -24,9 +24,10 @@ const RecordTable = ({ recordsPage }: { recordsPage: RecordsPage }) => {
       <Table.Thead>
         <Table.Tr>
           <Table.Th w={'48'}></Table.Th>
+          {withQuery && <Table.Th w={'10%'}>Distance</Table.Th>}
           <Table.Th w={'10%'}>ID</Table.Th>
           <Table.Th w={'40%'}>Document</Table.Th>
-          <Table.Th w={'30%'}>Metadata</Table.Th>
+          <Table.Th w={withQuery ? '20%' : '30%'}>Metadata</Table.Th>
           <Table.Th w={'auto'}>Embedding</Table.Th>
         </Table.Tr>
       </Table.Thead>
@@ -36,6 +37,7 @@ const RecordTable = ({ recordsPage }: { recordsPage: RecordsPage }) => {
             <Table.Td className={styles.td}>
               <RecordRowActionMenu embedding={record.embedding.join(', ')} />
             </Table.Td>
+            {withQuery && <Table.Td className={styles.td}>{record.distance}</Table.Td>}
             <Table.Td className={styles.td}>
               <Text span size={'sm'}>
                 {record.id}
