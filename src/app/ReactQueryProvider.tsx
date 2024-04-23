@@ -13,10 +13,9 @@ function ReactQueryProvider({ children }: React.PropsWithChildren) {
       },
     },
   })
-  const [client] = React.useState(queryClient)
 
   return (
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       {children}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
