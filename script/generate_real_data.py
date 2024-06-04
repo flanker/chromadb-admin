@@ -1,14 +1,15 @@
-import chromadb
-import openai
+# pip install langchain chromadb openai unstructured langchain-community langchain-openai langchain_chroma
 import os
-from langchain.document_loaders import DirectoryLoader
+import openai
+import chromadb
+from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
 
 # Put your OpenAI api key here,
 # or run script with env variables: OPENAI_API_KEY
-# openai.api_key = ""
+openai.api_key = ""
 
 # load documents
 current_file_path = os.path.abspath(__file__)
@@ -26,7 +27,7 @@ embedding_function = OpenAIEmbeddings(openai_api_key=openai.api_key)
 
 # setup Chroma database
 host = "localhost"
-port = "8002"
+port = "8000"
 chroma_client = chromadb.HttpClient(host= host, port= port,)
 
 # loading docs into database

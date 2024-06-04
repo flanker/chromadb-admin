@@ -7,8 +7,36 @@ enum IncludeEnum {
   Distances = 'distances',
 }
 
-export async function fetchCollections(connectionString: string) {
-  const client = new ChromaClient({ path: connectionString })
+type Auth = {
+  authType: string
+  token: string
+  username: string
+  password: string
+}
+
+function formatAuth(auth: Auth) {
+  if (auth.authType === 'token') {
+    return {
+      provider: 'token',
+      credentials: auth.token,
+    }
+  } else if (auth.authType === 'basic') {
+    return {
+      provider: 'basic',
+      credentials: {
+        username: auth.username,
+        password: auth.password,
+      },
+    }
+  }
+}
+
+export async function fetchCollections(connectionString: string, auth: Auth) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+  })
+
   const collections = await client.listCollections()
 
   return collections.map(collection => ({
@@ -19,8 +47,11 @@ export async function fetchCollections(connectionString: string) {
 
 const PAGE_SIZE = 20
 
-export async function fetchRecords(connectionString: string, collectionName: string, page: number) {
-  const client = new ChromaClient({ path: connectionString })
+export async function fetchRecords(connectionString: string, auth: Auth, collectionName: string, page: number) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+  })
   const collection = await client.getCollection({ name: collectionName })
 
   const response = await collection.get({
@@ -43,8 +74,16 @@ type queryErrorResponse = {
   error: string
 }
 
-export async function queryRecords(connectionString: string, collectionName: string, queryEmbeddings: number[]) {
-  const client = new ChromaClient({ path: connectionString })
+export async function queryRecords(
+  connectionString: string,
+  auth: Auth,
+  collectionName: string,
+  queryEmbeddings: number[]
+) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+  })
   const collection = await client.getCollection({ name: collectionName })
 
   const response = await collection.query({
@@ -66,8 +105,11 @@ export async function queryRecords(connectionString: string, collectionName: str
   }))
 }
 
-export async function countRecord(connectionString: string, collectionName: string) {
-  const client = new ChromaClient({ path: connectionString })
+export async function countRecord(connectionString: string, auth: Auth, collectionName: string) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+  })
   const collection = await client.getCollection({ name: collectionName })
 
   return await collection.count()

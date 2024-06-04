@@ -3,15 +3,19 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
-import { Container, Title, Paper, TextInput, Group, Button } from '@mantine/core'
+import { Container, Title, Paper, TextInput, Group, Button, Radio } from '@mantine/core'
 
 import { useGetConfig } from '@/lib/client/query'
-import { updateConnectionString } from '@/lib/client/localstorage'
+import { updateConfig } from '@/lib/client/localstorage'
 
 export default function SetupPage() {
   const router = useRouter()
   const { data: appConfig } = useGetConfig()
   const [connectionString, setConnectionString] = useState(appConfig?.connectionString || '')
+  const [authType, setAuthType] = useState(appConfig?.authType || 'no_auth')
+  const [username, setUsername] = useState(appConfig?.username || '')
+  const [password, setPassword] = useState(appConfig?.password || '')
+  const [token, setToken] = useState(appConfig?.token || '')
 
   useEffect(() => {
     if (appConfig != null && appConfig.connectionString) {
@@ -20,8 +24,9 @@ export default function SetupPage() {
   }, [appConfig])
 
   const queryClient = useQueryClient()
+
   const connectButtonClicked = () => {
-    updateConnectionString(connectionString)
+    updateConfig({ connectionString, authType, username, password, token, currentCollection: '' })
     queryClient.setQueryData(['config'], { connectionString })
     router.push('/collections')
   }
@@ -43,6 +48,41 @@ export default function SetupPage() {
           value={connectionString}
           onChange={e => setConnectionString(e.currentTarget.value)}
         />
+        <Radio.Group label="Authentication Type" value={authType} onChange={setAuthType} mt="md">
+          <Group mt="xs">
+            <Radio value="no_auth" label="No Auth" />
+            <Radio value="token" label="Token" />
+            <Radio value="basic" label="Basic" />
+          </Group>
+        </Radio.Group>
+        {authType === 'token' && (
+          <TextInput
+            label="Token"
+            placeholder="Enter your token"
+            mt="md"
+            value={token}
+            onChange={e => setToken(e.currentTarget.value)}
+          />
+        )}
+        {authType === 'basic' && (
+          <div>
+            <TextInput
+              label="Username"
+              placeholder="Enter your username"
+              mt="md"
+              value={username}
+              onChange={e => setUsername(e.currentTarget.value)}
+            />
+            <TextInput
+              label="Password"
+              placeholder="Enter your password"
+              mt="md"
+              value={password}
+              onChange={e => setPassword(e.currentTarget.value)}
+              type="password"
+            />
+          </div>
+        )}
         <Group mt="lg" justify="flex-end">
           {appConfig?.connectionString && (
             <Button variant="default" onClick={backButtonClicked}>

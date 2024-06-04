@@ -1,8 +1,16 @@
 import { ChromaClient } from 'chromadb'
 
-const chromaPath = 'http://localhost:8002'
+const chromaPath = 'http://localhost:8004'
 
-const chroma = new ChromaClient({ path: chromaPath })
+const chroma = new ChromaClient({
+  path: chromaPath,
+  auth: {
+    provider: "basic",
+    credentials: "username:password",
+    // provider: "token",
+    // credentials: "test-token",
+  },
+})
 const collection = await chroma.createCollection({ name: 'test-collection' })
 for (let i = 0; i < 2000; i++) {
   await collection.add({

@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
 
+import { extractAuth, extractConnectionString } from '@/lib/server/params'
 import { countRecord, fetchRecords, queryRecords } from '@/lib/server/db'
 
 // without query embeddings
 export async function GET(request: Request, { params }: { params: { collectionName: string } }) {
   const connectionString = extractConnectionString(request)
+  const auth = extractAuth(request)
   const page = extractPage(request)
 
-  const data = await fetchRecords(connectionString, params.collectionName, page)
-  const totalCount = await countRecord(connectionString, params.collectionName)
+  const data = await fetchRecords(connectionString, auth, params.collectionName, page)
+  const totalCount = await countRecord(connectionString, auth, params.collectionName)
 
   return NextResponse.json({
     total: totalCount,
@@ -20,10 +22,11 @@ export async function GET(request: Request, { params }: { params: { collectionNa
 // with query embeddings
 export async function POST(request: Request, { params }: { params: { collectionName: string } }) {
   const connectionString = extractConnectionString(request)
+  const auth = extractAuth(request)
   const queryEmbeddings = await extractQuery(request)
 
   try {
-    const data = await queryRecords(connectionString, params.collectionName, queryEmbeddings)
+    const data = await queryRecords(connectionString, auth, params.collectionName, queryEmbeddings)
 
     return NextResponse.json({
       records: data,
@@ -36,12 +39,6 @@ export async function POST(request: Request, { params }: { params: { collectionN
       })
     }
   }
-}
-
-function extractConnectionString(request: Request) {
-  const url = new URL(request.url)
-  const searchParams = new URLSearchParams(url.search)
-  return searchParams.get('connectionString') || ''
 }
 
 function extractPage(request: Request) {

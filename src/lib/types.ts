@@ -1,6 +1,10 @@
 export type AppConfig = {
   connectionString: string
   currentCollection: string
+  authType: string
+  token: string
+  username: string
+  password: string
 }
 
 export type Collection = {

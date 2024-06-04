@@ -2,28 +2,58 @@ version: '3'
 
 services:
   chroma8000:
-    image: ghcr.io/chroma-core/chroma:latest
+    image: chromadb/chroma:latest
     volumes:
       - chroma8000_index_data:/index_data
     ports:
       - 8000:8000
 
   chroma8001:
-    image: ghcr.io/chroma-core/chroma:latest
+    image: chromadb/chroma:latest
     volumes:
       - chroma8001_index_data:/index_data
     ports:
       - 8001:8000
 
   chroma8002:
-    image: ghcr.io/chroma-core/chroma:latest
+    image: chromadb/chroma:latest
     volumes:
       - chroma8002_index_data:/index_data
     ports:
       - 8002:8000
-  
+
+  chroma8003_with_token_auth:
+    image: chromadb/chroma:latest
+    volumes:
+      - chroma8003_with_token_auth_index_data:/index_data
+    ports:
+      - 8003:8000
+    environment:
+      CHROMA_SERVER_AUTHN_PROVIDER: chromadb.auth.token_authn.TokenAuthenticationServerProvider
+      CHROMA_SERVER_AUTHN_CREDENTIALS: test-token
+      CHROMA_AUTH_TOKEN_TRANSPORT_HEADER: AUTHORIZATION
+    # curl -H 'Authorization: Bearer test-token' http://localhost:8003/api/v1/collections
+
+  chroma8004_with_basic_auth:
+    image: chromadb/chroma:latest
+    volumes:
+      - chroma8004_with_basic_auth_index_data:/index_data
+    ports:
+      - 8004:8000
+    environment:
+      CHROMA_SERVER_AUTHN_PROVIDER: chromadb.auth.basic_authn.BasicAuthenticationServerProvider
+      CHROMA_SERVER_AUTHN_CREDENTIALS: username:$2b$12$MHfPya6K/Z1qCgJ0Jv227OVyDiOE1k8LaVy.CEU2WZWuAD72l02be
+    # curl -H 'Authorization: Basic dXNlcm5hbWU6JDJiJDEyJE1IZlB5YTZLL1oxcUNnSjBKdjIyN09WeURpT0UxazhMYVZ5LkNFVTJXWld1QUQ3MmwwMmJl' http://localhost:8004/api/v1/collections
 
 volumes:
   chroma8000_index_data:
   chroma8001_index_data:
   chroma8002_index_data:
+  chroma8003_with_token_auth_index_data:
+  chroma8004_with_basic_auth_index_data:
+
+#docker run -d --rm -p "8000:8000"  \
+#  -e CHROMA_SERVER_AUTHN_CREDENTIALS="test-token" \
+#  -e CHROMA_AUTH_TOKEN_TRANSPORT_HEADER="AUTHORIZATION" \
+#  -e CHROMA_SERVER_AUTHN_PROVIDER="chromadb.auth.token_authn.TokenAuthenticationServerProvider" \
+#  --name chroma_with_token chromadb/chroma:0.5.0
