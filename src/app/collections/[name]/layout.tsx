@@ -15,7 +15,7 @@ export default function Layout({ children, params }: { children: ReactNode; para
   const { name: currentCollectionName } = params
   const { data: collections } = useGetCollections(config)
 
-  const collectionChanged = (name: string) => {
+  const collectionChanged = (name: string | null) => {
     router.push(`/collections/${name}`)
   }
 
