@@ -47,4 +47,6 @@ docker run -p 3000:3000 chromaadmin
 
 ## Note
 
-This is NOT and official Chroma project.
+This is NOT an official Chroma project.
+
+This project is licensed under the terms of the MIT license.
