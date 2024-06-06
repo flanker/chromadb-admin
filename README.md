@@ -31,19 +31,29 @@ THen, open [http://localhost:3000](http://localhost:3000) in your browser to see
 
 ## Run with Docker
 
+Run
+
+```bash
+docker run -p 3000:3000 fengzhichao/chromadb-admin
+```
+
+and visit https://localhost:3000⁠ in the browser.
+
+*NOTE*: Use `http://host.docker.internal:8000` for the connection string if you want to connect to a ChromaDB instance running locally.
+
+## Build and Run with Docker locally
+
 Build the Docker image:
 
 ```bash
-docker build -t chromaadmin .
+docker build -t chromadb-admin .
 ```
 
 Run the Docker container:
 
 ```bash
-docker run -p 3000:3000 chromaadmin
+docker run -p 3000:3000 chromadb-admin
 ```
-
-*NOTE*: Use `http://host.docker.internal:8000` for the connection string if you want to connect to a ChromaDB instance running locally.
 
 ## Note
 
