@@ -1,2 +1,5 @@
 theme: minima
 google_analytics: G-N6TV7GHLL5
+
+titles_from_headings:
+  strip_title: true
