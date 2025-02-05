@@ -31,10 +31,12 @@ function formatAuth(auth: Auth) {
   }
 }
 
-export async function fetchCollections(connectionString: string, auth: Auth) {
+export async function fetchCollections(connectionString: string, auth: Auth, tenant: string, database: string) {
   const client = new ChromaClient({
     path: connectionString,
     auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
   })
 
   const collections = await client.listCollections()
@@ -47,12 +49,21 @@ export async function fetchCollections(connectionString: string, auth: Auth) {
 
 const PAGE_SIZE = 20
 
-export async function fetchRecords(connectionString: string, auth: Auth, collectionName: string, page: number) {
-  const client = new ChromaClient({
-    path: connectionString,
-    auth: formatAuth(auth),
-  })
-  const collection = await client.getCollection({ name: collectionName })
+export async function fetchRecords(
+  connectionString: string,
+  auth: Auth,
+  collectionName: string,
+  page: number,
+  tenant: string,
+  database: string
+) {
+    const client = new ChromaClient({
+      path: connectionString,
+      auth: formatAuth(auth),
+      database: database,
+      tenant: tenant,
+    })
+    const collection = await client.getCollection({ name: collectionName })
 
   const response = await collection.get({
     limit: PAGE_SIZE,
@@ -78,11 +89,15 @@ export async function queryRecords(
   connectionString: string,
   auth: Auth,
   collectionName: string,
-  queryEmbeddings: number[]
+  queryEmbeddings: number[],
+  tenant: string,
+  database: string
 ) {
   const client = new ChromaClient({
     path: connectionString,
     auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
   })
   const collection = await client.getCollection({ name: collectionName })
 
@@ -105,10 +120,18 @@ export async function queryRecords(
   }))
 }
 
-export async function countRecord(connectionString: string, auth: Auth, collectionName: string) {
+export async function countRecord(
+  connectionString: string,
+  auth: Auth,
+  collectionName: string,
+  tenant: string,
+  database: string
+) {
   const client = new ChromaClient({
     path: connectionString,
     auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
   })
   const collection = await client.getCollection({ name: collectionName })
 

@@ -27,7 +27,7 @@ export function useGetCollections(config?: AppConfig) {
     queryKey: ['config', config?.connectionString, 'collections'],
     queryFn: async (): Promise<Collection[]> => {
       const response = await fetch(
-        `/api/collections?connectionString=${config?.connectionString}${authParamsString(config)}`
+        `/api/collections?connectionString=${config?.connectionString}${authParamsString(config)}&tenant=${config?.tenant}&database=${config?.database}`
       )
       if (!response.ok) {
         throw new Error(`API getCollections returns response code: ${response.status}, message: ${response.statusText}`)
@@ -45,12 +45,12 @@ export function useGetCollectionRecords(config?: AppConfig, collectionName?: str
     queryFn: async (): Promise<QueryResult> => {
       if (query === undefined || query === '') {
         const response = await fetch(
-          `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&page=${page}&query=${query}${authParamsString(config)}`
+          `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&tenant=${config?.tenant}&database=${config?.database}&page=${page}&query=${query}${authParamsString(config)}`
         )
         return response.json()
       } else {
         const response = await fetch(
-          `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&authType=${config?.authType}${authParamsString(config)}`,
+          `/api/collections/${collectionName}/records?connectionString=${config?.connectionString}&tenant=${config?.tenant}&database=${config?.database}&authType=${config?.authType}${authParamsString(config)}`,
           {
             method: 'POST',
             body: JSON.stringify({ query: query }),
