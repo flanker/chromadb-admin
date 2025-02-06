@@ -5,6 +5,8 @@ export type AppConfig = {
   token: string
   username: string
   password: string
+  tenant: string
+  database: string
 }
 
 export type Collection = {

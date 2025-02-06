@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { extractAuth, extractConnectionString } from '@/lib/server/params'
+import { extractAuth, extractConnectionString, extractDatabase, extractTenant } from '@/lib/server/params'
 import { countRecord, fetchRecords, queryRecords } from '@/lib/server/db'
 
 // without query embeddings
@@ -8,9 +8,11 @@ export async function GET(request: Request, { params }: { params: { collectionNa
   const connectionString = extractConnectionString(request)
   const auth = extractAuth(request)
   const page = extractPage(request)
+  const tenant = extractTenant(request)
+  const database = extractDatabase(request)
 
-  const data = await fetchRecords(connectionString, auth, params.collectionName, page)
-  const totalCount = await countRecord(connectionString, auth, params.collectionName)
+  const data = await fetchRecords(connectionString, auth, params.collectionName, page, tenant, database)
+  const totalCount = await countRecord(connectionString, auth, params.collectionName, tenant, database)
 
   return NextResponse.json({
     total: totalCount,
@@ -24,9 +26,11 @@ export async function POST(request: Request, { params }: { params: { collectionN
   const connectionString = extractConnectionString(request)
   const auth = extractAuth(request)
   const queryEmbeddings = await extractQuery(request)
+  const tenant = extractTenant(request)
+  const database = extractDatabase(request)
 
   try {
-    const data = await queryRecords(connectionString, auth, params.collectionName, queryEmbeddings)
+    const data = await queryRecords(connectionString, auth, params.collectionName, queryEmbeddings, tenant, database)
 
     return NextResponse.json({
       records: data,

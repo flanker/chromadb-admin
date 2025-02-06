@@ -12,6 +12,8 @@ export default function SetupPage() {
   const router = useRouter()
   const { data: appConfig } = useGetConfig()
   const [connectionString, setConnectionString] = useState(appConfig?.connectionString || '')
+  const [tenant, setTenant] = useState(appConfig?.tenant || 'default_tenant')
+  const [database, setDatabase] = useState(appConfig?.database || 'default_database')
   const [authType, setAuthType] = useState(appConfig?.authType || 'no_auth')
   const [username, setUsername] = useState(appConfig?.username || '')
   const [password, setPassword] = useState(appConfig?.password || '')
@@ -26,8 +28,8 @@ export default function SetupPage() {
   const queryClient = useQueryClient()
 
   const connectButtonClicked = () => {
-    updateConfig({ connectionString, authType, username, password, token, currentCollection: '' })
-    queryClient.setQueryData(['config'], { connectionString })
+    updateConfig({ connectionString, authType, username, password, token, currentCollection: '', tenant, database })
+    queryClient.setQueryData(['config'], { connectionString, tenant, database })
     router.push('/collections')
   }
 
@@ -47,6 +49,20 @@ export default function SetupPage() {
           placeholder="http://localhost:8000"
           value={connectionString}
           onChange={e => setConnectionString(e.currentTarget.value)}
+        />
+        <TextInput 
+          label="Tenant"
+          description="The tenant to set."
+          placeholder='default_tenant'
+          value={tenant}
+          onChange={e => setTenant(e.currentTarget.value)}
+        />
+        <TextInput 
+          label="Database"
+          description="The database to set."
+          placeholder='default_database'
+          value={database}
+          onChange={e => setDatabase(e.currentTarget.value)}
         />
         <Radio.Group label="Authentication Type" value={authType} onChange={setAuthType} mt="md">
           <Group mt="xs">

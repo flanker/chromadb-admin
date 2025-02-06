@@ -7,7 +7,16 @@ export function getConfig(): AppConfig {
   if (config) {
     return JSON.parse(config)
   } else {
-    return { connectionString: '', currentCollection: '', authType: 'no_auth', token: '', username: '', password: '' }
+    return {
+      connectionString: '',
+      currentCollection: '',
+      authType: 'no_auth',
+      token: '',
+      username: '',
+      password: '',
+      tenant: 'default_tenant',
+      database: 'default_database',
+    }
   }
 }
 
