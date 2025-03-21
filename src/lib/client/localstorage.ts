@@ -26,7 +26,16 @@ export function updateConfig(config: AppConfig) {
 }
 
 export function updateConnectionString(connectionString: string) {
-  const config = getConfig() || { connectionString: '', currentCollection: '' }
+  const config = getConfig() || {
+    connectionString: '',
+    currentCollection: '',
+    authType: '',
+    token: '',
+    username: '',
+    password: '',
+    tenant: '',
+    database: '',
+  }
   const newConfig = {
     ...config,
     connectionString,

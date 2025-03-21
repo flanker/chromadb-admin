@@ -57,13 +57,13 @@ export async function fetchRecords(
   tenant: string,
   database: string
 ) {
-    const client = new ChromaClient({
-      path: connectionString,
-      auth: formatAuth(auth),
-      database: database,
-      tenant: tenant,
-    })
-    const collection = await client.getCollection({ name: collectionName })
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
+  })
+  const collection = await client.getCollection({ name: collectionName })
 
   const response = await collection.get({
     limit: PAGE_SIZE,
