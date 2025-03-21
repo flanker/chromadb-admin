@@ -29,7 +29,7 @@ const SearchPanel = () => {
     <Paper shadow="xs" px="lg" py="xs" mb="md" withBorder>
       <Grid align={'center'}>
         <Grid.Col span="content">
-          <Text size={'sm'}>Query by vectors:</Text>
+          <Text size={'sm'}>Query by vectors or ID:</Text>
         </Grid.Col>
         <Grid.Col span="auto">
           <Input
