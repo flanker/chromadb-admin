@@ -50,17 +50,17 @@ export default function SetupPage() {
           value={connectionString}
           onChange={e => setConnectionString(e.currentTarget.value)}
         />
-        <TextInput 
+        <TextInput
           label="Tenant"
           description="The tenant to set."
-          placeholder='default_tenant'
+          placeholder="default_tenant"
           value={tenant}
           onChange={e => setTenant(e.currentTarget.value)}
         />
-        <TextInput 
+        <TextInput
           label="Database"
           description="The database to set."
-          placeholder='default_database'
+          placeholder="default_database"
           value={database}
           onChange={e => setDatabase(e.currentTarget.value)}
         />
