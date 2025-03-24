@@ -1,4 +1,4 @@
-import { ChromaClient } from 'chromadb'
+import { ChromaClient, DefaultEmbeddingFunction } from 'chromadb'
 
 enum IncludeEnum {
   Documents = 'documents',
@@ -41,10 +41,7 @@ export async function fetchCollections(connectionString: string, auth: Auth, ten
 
   const collections = await client.listCollections()
 
-  return collections.map(collection => ({
-    id: collection.id,
-    name: collection.name,
-  }))
+  return collections
 }
 
 const PAGE_SIZE = 20
@@ -63,7 +60,9 @@ export async function fetchRecords(
     database: database,
     tenant: tenant,
   })
-  const collection = await client.getCollection({ name: collectionName })
+
+  const embeddingFunction = new DefaultEmbeddingFunction()
+  const collection = await client.getCollection({ name: collectionName, embeddingFunction: embeddingFunction })
 
   const response = await collection.get({
     limit: PAGE_SIZE,
@@ -99,7 +98,9 @@ export async function queryRecords(
     database: database,
     tenant: tenant,
   })
-  const collection = await client.getCollection({ name: collectionName })
+
+  const embeddingFunction = new DefaultEmbeddingFunction()
+  const collection = await client.getCollection({ name: collectionName, embeddingFunction: embeddingFunction })
 
   const response = await collection.query({
     queryEmbeddings: queryEmbeddings,
@@ -136,7 +137,9 @@ export async function queryRecordsText(
     database: database,
     tenant: tenant,
   })
-  const collection = await client.getCollection({ name: collectionName })
+
+  const embeddingFunction = new DefaultEmbeddingFunction()
+  const collection = await client.getCollection({ name: collectionName, embeddingFunction: embeddingFunction })
 
   const response = await collection.get({
     ids: [queryTexts],
@@ -178,7 +181,9 @@ export async function countRecord(
     database: database,
     tenant: tenant,
   })
-  const collection = await client.getCollection({ name: collectionName })
+
+  const embeddingFunction = new DefaultEmbeddingFunction()
+  const collection = await client.getCollection({ name: collectionName, embeddingFunction: embeddingFunction })
 
   return await collection.count()
 }

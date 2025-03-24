@@ -14,7 +14,7 @@ export default function CollectionsPage() {
 
   useEffect(() => {
     if (collections != null && collections.length > 0) {
-      router.push(`/collections/${collections[0].name}`)
+      router.push(`/collections/${collections[0]}`)
     }
   }, [collections, router])
 

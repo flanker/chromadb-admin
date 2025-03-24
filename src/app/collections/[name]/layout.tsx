@@ -29,7 +29,7 @@ export default function Layout({ children, params }: { children: ReactNode; para
               <Select
                 allowDeselect={false}
                 value={currentCollectionName}
-                data={collections?.map(c => c.name)}
+                data={collections}
                 onChange={collectionChanged}
               />
             ) : (

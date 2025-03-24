@@ -9,10 +9,7 @@ export type AppConfig = {
   database: string
 }
 
-export type Collection = {
-  id: string
-  name: string
-}
+export type Collection = string
 
 export type Record = {
   id: string
