@@ -154,15 +154,16 @@ export async function queryRecordsText(
     throw new Error('RecordNotFound')
   }
 
-  return [{
-    id: response.ids[0],
-    document: response.documents[0],
-    metadata: response.metadatas[0],
-    embedding: response.embeddings?.[0],
-    distance: 0
-  }];
+  return [
+    {
+      id: response.ids[0],
+      document: response.documents[0],
+      metadata: response.metadatas[0],
+      embedding: response.embeddings?.[0],
+      distance: 0,
+    },
+  ]
 }
-
 
 export async function countRecord(
   connectionString: string,

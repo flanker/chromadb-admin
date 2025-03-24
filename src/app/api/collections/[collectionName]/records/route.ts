@@ -38,7 +38,6 @@ export async function POST(request: Request, { params }: { params: { collectionN
         records: data,
       })
     } else {
-      console.log("debug2")
       const data = await queryRecordsText(connectionString, auth, params.collectionName, queryInput, tenant, database)
       return NextResponse.json({
         records: data,
@@ -46,17 +45,27 @@ export async function POST(request: Request, { params }: { params: { collectionN
     }
   } catch (error: any) {
     if ((error as Error).message === 'InvalidDimension') {
-      return NextResponse.json({
-        error: 'Invalid dimension for query embeddings. Please provide embeddings with the same dimension as the collection.',
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          error:
+            'Invalid dimension for query embeddings. Please provide embeddings with the same dimension as the collection.',
+        },
+        { status: 400 }
+      )
     } else if ((error as Error).message === 'RecordNotFound') {
-      return NextResponse.json({
-        error: 'No matching record found for the provided ID.',
-      }, { status: 404 })
+      return NextResponse.json(
+        {
+          error: 'No matching record found for the provided ID.',
+        },
+        { status: 404 }
+      )
     }
-    return NextResponse.json({
-      error: 'An unexpected error occurred.',
-    }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: 'An unexpected error occurred.',
+      },
+      { status: 500 }
+    )
   }
 }
 

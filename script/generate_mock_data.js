@@ -5,8 +5,8 @@ const chromaPath = 'http://localhost:8004'
 const chroma = new ChromaClient({
   path: chromaPath,
   auth: {
-    provider: "basic",
-    credentials: "username:password",
+    provider: 'basic',
+    credentials: 'username:password',
     // provider: "token",
     // credentials: "test-token",
   },
