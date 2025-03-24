@@ -57,13 +57,13 @@ export async function fetchRecords(
   tenant: string,
   database: string
 ) {
-    const client = new ChromaClient({
-      path: connectionString,
-      auth: formatAuth(auth),
-      database: database,
-      tenant: tenant,
-    })
-    const collection = await client.getCollection({ name: collectionName })
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
+  })
+  const collection = await client.getCollection({ name: collectionName })
 
   const response = await collection.get({
     limit: PAGE_SIZE,
@@ -118,6 +118,51 @@ export async function queryRecords(
     embedding: response.embeddings?.[0][index],
     distance: response.distances?.[0][index],
   }))
+}
+
+// src/lib/server/db.ts
+
+export async function queryRecordsText(
+  connectionString: string,
+  auth: Auth,
+  collectionName: string,
+  queryTexts: string,
+  tenant: string,
+  database: string
+) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
+  })
+  const collection = await client.getCollection({ name: collectionName })
+
+  const response = await collection.get({
+    ids: [queryTexts],
+    include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas],
+  })
+
+  if ((response as unknown as queryErrorResponse)['error'] != null) {
+    throw new Error((response as unknown as queryErrorResponse)['error'])
+  }
+
+  console.log(response)
+
+  // Check if the response is empty
+  if (response.ids.length === 0) {
+    throw new Error('RecordNotFound')
+  }
+
+  return [
+    {
+      id: response.ids[0],
+      document: response.documents[0],
+      metadata: response.metadatas[0],
+      embedding: response.embeddings?.[0],
+      distance: 0,
+    },
+  ]
 }
 
 export async function countRecord(

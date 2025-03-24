@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { extractAuth, extractConnectionString, extractDatabase, extractTenant } from '@/lib/server/params'
-import { countRecord, fetchRecords, queryRecords } from '@/lib/server/db'
+import { countRecord, fetchRecords, queryRecords, queryRecordsText } from '@/lib/server/db'
 
 // without query embeddings
 export async function GET(request: Request, { params }: { params: { collectionName: string } }) {
@@ -22,26 +22,50 @@ export async function GET(request: Request, { params }: { params: { collectionNa
 }
 
 // with query embeddings
+// src/app/api/collections/[collectionName]/records/route.ts
+
 export async function POST(request: Request, { params }: { params: { collectionName: string } }) {
   const connectionString = extractConnectionString(request)
   const auth = extractAuth(request)
-  const queryEmbeddings = await extractQuery(request)
+  const queryInput = await extractQuery(request)
   const tenant = extractTenant(request)
   const database = extractDatabase(request)
 
   try {
-    const data = await queryRecords(connectionString, auth, params.collectionName, queryEmbeddings, tenant, database)
-
-    return NextResponse.json({
-      records: data,
-    })
-  } catch (error: any) {
-    if ((error as Error).message === 'InvalidDimension') {
+    if (Array.isArray(queryInput)) {
+      const data = await queryRecords(connectionString, auth, params.collectionName, queryInput, tenant, database)
       return NextResponse.json({
-        error:
-          'Invalid dimension for query embeddings. Please provide embeddings with the same dimension as the collection.',
+        records: data,
+      })
+    } else {
+      const data = await queryRecordsText(connectionString, auth, params.collectionName, queryInput, tenant, database)
+      return NextResponse.json({
+        records: data,
       })
     }
+  } catch (error: any) {
+    if ((error as Error).message === 'InvalidDimension') {
+      return NextResponse.json(
+        {
+          error:
+            'Invalid dimension for query embeddings. Please provide embeddings with the same dimension as the collection.',
+        },
+        { status: 400 }
+      )
+    } else if ((error as Error).message === 'RecordNotFound') {
+      return NextResponse.json(
+        {
+          error: 'No matching record found for the provided ID.',
+        },
+        { status: 404 }
+      )
+    }
+    return NextResponse.json(
+      {
+        error: 'An unexpected error occurred.',
+      },
+      { status: 500 }
+    )
   }
 }
 
@@ -51,7 +75,28 @@ function extractPage(request: Request) {
   return parseInt(searchParams.get('page') || '1', 10)
 }
 
-async function extractQuery(request: Request) {
+async function extractQuery(request: Request): Promise<number[] | string> {
   const res = await request.json()
-  return res.query!.split(',').map((item: string) => parseFloat(item))
+  const query = res.query
+
+  if (typeof query === 'string') {
+    // Check if the string contains commas, indicating it might be a list of floats
+    if (query.includes(',')) {
+      try {
+        return query.split(',').map((item: string) => parseFloat(item))
+      } catch (error) {
+        // If parsing fails, return the original string
+        return query
+      }
+    } else {
+      // If it's a single string without commas, return it as is
+      return query
+    }
+  } else if (Array.isArray(query)) {
+    // If it's already an array, assume it's a list of numbers and return it
+    return query
+  } else {
+    // If it's neither a string nor an array, throw an error
+    throw new Error('Invalid query format')
+  }
 }
