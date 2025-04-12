@@ -37,9 +37,15 @@ export default function Layout({ children, params }: { children: ReactNode; para
             )}
           </Group>
           <Group>
-            <Text size="sm" c="dimmed">
-              {config?.connectionString}
-            </Text>
+            {config && (
+              <Group gap="xs" c="dimmed">
+                <Text size="sm">{config.connectionString}</Text>
+                <Text size="sm">/</Text>
+                <Text size="sm">{config.tenant}</Text>
+                <Text size="sm">/</Text>
+                <Text size="sm">{config.database}</Text>
+              </Group>
+            )}
             <Anchor component={Link} href="/setup" title={'Setup'}>
               <ActionIcon variant="default" aria-label="Settings" size={'lg'}>
                 <IconSettings stroke={1.5} />
