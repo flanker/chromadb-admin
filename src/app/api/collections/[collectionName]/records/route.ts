@@ -11,14 +11,23 @@ export async function GET(request: Request, { params }: { params: { collectionNa
   const tenant = extractTenant(request)
   const database = extractDatabase(request)
 
-  const data = await fetchRecords(connectionString, auth, params.collectionName, page, tenant, database)
-  const totalCount = await countRecord(connectionString, auth, params.collectionName, tenant, database)
+  try {
+    const data = await fetchRecords(connectionString, auth, params.collectionName, page, tenant, database)
+    const totalCount = await countRecord(connectionString, auth, params.collectionName, tenant, database)
 
-  return NextResponse.json({
-    total: totalCount,
-    page: page,
-    records: data,
-  })
+    return NextResponse.json({
+      total: totalCount,
+      page: page,
+      records: data,
+    })
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: (error as Error).message,
+      },
+      { status: 500 }
+    )
+  }
 }
 
 // with query embeddings
