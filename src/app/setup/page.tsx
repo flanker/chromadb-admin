@@ -28,8 +28,46 @@ export default function SetupPage() {
   const queryClient = useQueryClient()
 
   const connectButtonClicked = () => {
-    updateConfig({ connectionString, authType, username, password, token, currentCollection: '', tenant, database })
-    queryClient.setQueryData(['config'], { connectionString, tenant, database })
+    let formattedConnectionString = connectionString.trim()
+
+    try {
+      // Add http:// if no protocol specified
+      if (!formattedConnectionString.startsWith('http://') && !formattedConnectionString.startsWith('https://')) {
+        formattedConnectionString = 'http://' + formattedConnectionString
+      }
+
+      // Parse the URL
+      const url = new URL(formattedConnectionString)
+
+      // If no port specified, add default port 8000
+      if (!url.port) {
+        url.port = '8000'
+        formattedConnectionString = url.toString()
+      }
+
+      // Remove trailing slash if exists
+      formattedConnectionString = formattedConnectionString.replace(/\/$/, '')
+    } catch (error) {
+      console.error(error)
+      alert('Invalid connection string format. Please use format: http://hostname:port or https://hostname:port')
+      return
+    }
+
+    updateConfig({
+      connectionString: formattedConnectionString,
+      authType,
+      username,
+      password,
+      token,
+      currentCollection: '',
+      tenant,
+      database,
+    })
+    queryClient.setQueryData(['config'], {
+      connectionString: formattedConnectionString,
+      tenant,
+      database,
+    })
     router.push('/collections')
   }
 
