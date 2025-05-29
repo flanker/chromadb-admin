@@ -20,4 +20,4 @@ RUN npm run build
 CMD ["npm", "start"]
 
 # 暴露应用运行的端口
-EXPOSE 3000
+EXPOSE 3001
