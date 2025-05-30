@@ -27,17 +27,17 @@ pnpm dev
 bun dev
 ```
 
-THen, open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
+THen, open [http://localhost:3001](http://localhost:3001) in your browser to see the app.
 
 ## Run with Docker
 
 Run
 
 ```bash
-docker run -p 3000:3000 fengzhichao/chromadb-admin
+docker run -p 3001:3001 fengzhichao/chromadb-admin
 ```
 
-and visit https://localhost:3000⁠ in the browser.
+and visit https://localhost:3001⁠ in the browser.
 
 *NOTE*: Use `http://host.docker.internal:8000` for the connection string if you want to connect to a ChromaDB instance running locally.
 
@@ -52,7 +52,7 @@ docker build -t chromadb-admin .
 Run the Docker container:
 
 ```bash
-docker run -p 3000:3000 chromadb-admin
+docker run -p 3001:3001 chromadb-admin
 ```
 
 ## Note
