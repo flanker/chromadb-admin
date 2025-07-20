@@ -2,7 +2,13 @@
   "name": "chromadb-admin",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@8.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "next dev -p 3002",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev -p 3002",
     "build": "next build",
