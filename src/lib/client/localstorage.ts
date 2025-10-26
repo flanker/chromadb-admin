@@ -16,6 +16,8 @@ export function getConfig(): AppConfig {
       password: '',
       tenant: 'default_tenant',
       database: 'default_database',
+      embeddingModelUrl: '',
+      embeddingModel: 'text-embedding-3-small',
     }
   }
 }
@@ -35,6 +37,8 @@ export function updateConnectionString(connectionString: string) {
     password: '',
     tenant: '',
     database: '',
+    embeddingModelUrl: '',
+    embeddingModel: '',
   }
   const newConfig = {
     ...config,

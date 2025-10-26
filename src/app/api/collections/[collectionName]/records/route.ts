@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { extractAuth, extractConnectionString, extractDatabase, extractTenant } from '@/lib/server/params'
-import { countRecord, fetchRecords, queryRecords, queryRecordsText } from '@/lib/server/db'
+import { countRecord, fetchRecords, queryRecords, queryRecordsText, deleteRecord } from '@/lib/server/db'
 
 // without query embeddings
 export async function GET(request: Request, { params }: { params: { collectionName: string } }) {
@@ -107,5 +107,41 @@ async function extractQuery(request: Request): Promise<number[] | string> {
   } else {
     // If it's neither a string nor an array, throw an error
     throw new Error('Invalid query format')
+  }
+}
+
+// DELETE method to delete a record by ID
+export async function DELETE(request: Request, { params }: { params: { collectionName: string } }) {
+  const connectionString = extractConnectionString(request)
+  const auth = extractAuth(request)
+  const tenant = extractTenant(request)
+  const database = extractDatabase(request)
+
+  try {
+    const body = await request.json()
+    const recordId = body.id
+
+    if (!recordId) {
+      return NextResponse.json(
+        {
+          error: 'Record ID is required',
+        },
+        { status: 400 }
+      )
+    }
+
+    await deleteRecord(connectionString, auth, params.collectionName, recordId, tenant, database)
+
+    return NextResponse.json({
+      success: true,
+      message: 'Record deleted successfully',
+    })
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: (error as Error).message,
+      },
+      { status: 500 }
+    )
   }
 }

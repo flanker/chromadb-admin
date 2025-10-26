@@ -1,3 +1,5 @@
+import '@mantine/notifications/styles.css'
+import { Notifications } from '@mantine/notifications'
 import '@mantine/core/styles.css'
 import { MantineProvider, ColorSchemeScript } from '@mantine/core'
 
@@ -18,7 +20,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ReactQueryProvider>
-          <MantineProvider>{children}</MantineProvider>
+          <MantineProvider>
+            <Notifications />
+            {children}
+          </MantineProvider>
         </ReactQueryProvider>
       </body>
     </html>

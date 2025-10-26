@@ -35,7 +35,7 @@ const RecordPanel = ({ collectionName }: { collectionName: string }) => {
       return (
         <Paper shadow="xs" p="lg" withBorder>
           <ModalsProvider modals={{ recordDetailModal: RecordDetailModal }}>
-            <RecordTable withQuery={!!query} recordsPage={queryResult}></RecordTable>
+            <RecordTable withQuery={!!query} recordsPage={queryResult} collectionName={collectionName}></RecordTable>
             {query ? null : (
               <Group pt="md" justify="flex-end">
                 <RecordPagination recordsPage={queryResult} />
