@@ -26,9 +26,9 @@ export async function POST(request: Request) {
 
     let embedding: number[]
 
-    // 检查是否是 Ollama 原生 API 格式
+    // Check if it is Ollama native API format
     if (modelUrl.includes('/api/embeddings') || modelUrl.includes('/api/embed')) {
-      // 直接使用 Ollama 原生 API 格式
+      // Use Ollama native API format directly
       const response = await fetch(modelUrl, {
         method: 'POST',
         headers: {
@@ -48,8 +48,8 @@ export async function POST(request: Request) {
       const data = await response.json()
       embedding = data.embedding
     } else if (modelUrl.endsWith('/embeddings')) {
-      // 完整的 embeddings endpoint URL (LM Studio 等)
-      // 直接使用 fetch 调用，不使用 OpenAI SDK
+      // Full embeddings endpoint URL (LM Studio, etc.)
+      // Use fetch directly, without using OpenAI SDK
       const response = await fetch(modelUrl, {
         method: 'POST',
         headers: {
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       }
       embedding = data.data[0].embedding
     } else {
-      // 使用 OpenAI SDK (适用于 base URL: OpenAI, LM Studio, Ollama 的 OpenAI 兼容模式)
+      // Use OpenAI SDK (for base URL: OpenAI, LM Studio, Ollama OpenAI compatible mode)
       const openai = new OpenAI({
         apiKey: 'dummy-key', // Some embedding services don't require a key
         baseURL: modelUrl,

@@ -30,7 +30,7 @@ const SearchPanel = () => {
   const getEmbeddingMutation = useGetEmbedding()
 
   useEffect(() => {
-    // 只在向量模式或没有 embedding 信息时更新显示值
+    // Only update display value in vector mode or when there is no embedding info
     if (queryMode === 'vector' || !embeddingInfo) {
       setQueryValue(query)
     }

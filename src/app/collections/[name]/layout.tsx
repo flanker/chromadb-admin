@@ -74,8 +74,8 @@ export default function Layout({ children, params }: { children: ReactNode; para
   const handleRenameSubmit = async () => {
     if (!newCollectionName.trim()) {
       notifications.show({
-        title: '错误',
-        message: '请输入新的 collection 名称',
+        title: 'Error',
+        message: 'Please enter a new collection name',
         color: 'red',
       })
       return
@@ -83,8 +83,8 @@ export default function Layout({ children, params }: { children: ReactNode; para
 
     if (newCollectionName === currentCollectionName) {
       notifications.show({
-        title: '错误',
-        message: '新名称不能与当前名称相同',
+        title: 'Error',
+        message: 'New name cannot be the same as the current name',
         color: 'red',
       })
       return
@@ -96,15 +96,15 @@ export default function Layout({ children, params }: { children: ReactNode; para
         newName: newCollectionName,
       })
       notifications.show({
-        title: '重命名成功',
-        message: `Collection 已重命名为 "${newCollectionName}"`,
+        title: 'Rename Successful',
+        message: `Collection renamed to' "${newCollectionName}"`,
         color: 'green',
       })
       setRenameModalOpened(false)
       router.push(`/collections/${newCollectionName}`)
     } catch (error) {
       notifications.show({
-        title: '重命名失败',
+        title: 'Rename Failed',
         message: (error as Error).message,
         color: 'red',
       })
