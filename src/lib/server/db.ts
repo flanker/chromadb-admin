@@ -187,3 +187,92 @@ export async function countRecord(
 
   return await collection.count()
 }
+
+export async function deleteRecord(
+  connectionString: string,
+  auth: Auth,
+  collectionName: string,
+  recordId: string,
+  tenant: string,
+  database: string
+) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
+  })
+
+  const embeddingFunction = new DefaultEmbeddingFunction()
+  const collection = await client.getCollection({ name: collectionName, embeddingFunction: embeddingFunction })
+
+  await collection.delete({ ids: [recordId] })
+
+  return { success: true }
+}
+
+export async function deleteCollection(
+  connectionString: string,
+  auth: Auth,
+  collectionName: string,
+  tenant: string,
+  database: string
+) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
+  })
+
+  await client.deleteCollection({ name: collectionName })
+
+  return { success: true }
+}
+
+export async function updateCollection(
+  connectionString: string,
+  auth: Auth,
+  oldName: string,
+  newName: string,
+  tenant: string,
+  database: string
+) {
+  const client = new ChromaClient({
+    path: connectionString,
+    auth: formatAuth(auth),
+    database: database,
+    tenant: tenant,
+  })
+
+  const embeddingFunction = new DefaultEmbeddingFunction()
+  const oldCollection = await client.getCollection({ name: oldName, embeddingFunction: embeddingFunction })
+
+  // Get all records from the old collection
+  const records = await oldCollection.get({
+    include: [IncludeEnum.Documents, IncludeEnum.Embeddings, IncludeEnum.Metadatas],
+  })
+
+  // Create new collection with new name
+  const newCollection = await client.createCollection({ name: newName, embeddingFunction: embeddingFunction })
+
+  // Add all records to new collection
+  if (records.ids.length > 0) {
+    // Filter out any null values
+    const validDocuments = records.documents?.filter((doc): doc is string => doc !== null) || []
+    const validEmbeddings = records.embeddings?.filter((emb): emb is number[] => emb !== null) || []
+    const validMetadatas = records.metadatas?.filter((meta): meta is Record<string, any> => meta !== null) || []
+
+    await newCollection.add({
+      ids: records.ids,
+      documents: validDocuments,
+      embeddings: validEmbeddings,
+      metadatas: validMetadatas,
+    })
+  }
+
+  // Delete old collection
+  await client.deleteCollection({ name: oldName })
+
+  return { success: true, newName }
+}

@@ -7,6 +7,8 @@ export type AppConfig = {
   password: string
   tenant: string
   database: string
+  embeddingModelUrl: string
+  embeddingModel: string
 }
 
 export type Collection = string

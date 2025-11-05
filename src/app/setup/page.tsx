@@ -18,6 +18,8 @@ export default function SetupPage() {
   const [username, setUsername] = useState(appConfig?.username || '')
   const [password, setPassword] = useState(appConfig?.password || '')
   const [token, setToken] = useState(appConfig?.token || '')
+  const [embeddingModelUrl, setEmbeddingModelUrl] = useState(appConfig?.embeddingModelUrl || '')
+  const [embeddingModel, setEmbeddingModel] = useState(appConfig?.embeddingModel || 'text-embedding-3-small')
 
   useEffect(() => {
     if (appConfig != null && appConfig.connectionString) {
@@ -62,11 +64,15 @@ export default function SetupPage() {
       currentCollection: '',
       tenant,
       database,
+      embeddingModelUrl,
+      embeddingModel,
     })
     queryClient.setQueryData(['config'], {
       connectionString: formattedConnectionString,
       tenant,
       database,
+      embeddingModelUrl,
+      embeddingModel,
     })
     router.push('/collections')
   }
@@ -101,6 +107,22 @@ export default function SetupPage() {
           placeholder="default_database"
           value={database}
           onChange={e => setDatabase(e.currentTarget.value)}
+        />
+        <TextInput
+          label="Embedding Model URL (Optional)"
+          description="Supports full endpoint or base URL. LM Studio: http://localhost:1234/v1/embeddings | Ollama (OpenAI mode): http://localhost:11434/v1 | Ollama (native): http://localhost:11434/api/embeddings"
+          placeholder="http://localhost:1234/v1/embeddings"
+          value={embeddingModelUrl}
+          onChange={e => setEmbeddingModelUrl(e.currentTarget.value)}
+          mt="md"
+        />
+        <TextInput
+          label="Embedding Model (Optional)"
+          description="Model name, e.g.: text-embedding-3-small (OpenAI/LM Studio) or llama2 (Ollama)"
+          placeholder="text-embedding-3-small"
+          value={embeddingModel}
+          onChange={e => setEmbeddingModel(e.currentTarget.value)}
+          mt="md"
         />
         <Radio.Group label="Authentication Type" value={authType} onChange={setAuthType} mt="md">
           <Group mt="xs">
