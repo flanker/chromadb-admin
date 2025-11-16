@@ -11,9 +11,9 @@
     "generate-mock-data": "node script/generate_mock_data.js"
   },
   "dependencies": {
-    "@mantine/core": "^7.9.0",
-    "@mantine/hooks": "^7.9.0",
-    "@mantine/modals": "^7.9.0",
+    "@mantine/core": "^7.17.8",
+    "@mantine/hooks": "^7.17.8",
+    "@mantine/modals": "^7.17.8",
     "@mantine/notifications": "^7.17.8",
     "@tabler/icons-react": "^3.3.0",
     "@tanstack/react-query": "^5.32.1",
